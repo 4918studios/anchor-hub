@@ -23,6 +23,7 @@ Two parallel workstreams that converge:
 - Scope + policy evaluation (`accessControl.ts`, `policyEvaluation.ts`, `policyService.ts`)
 - App lifecycle (install, uninstall, manifest — `apps/*.ts`)
 - Identity endpoint (`/api/me`)
+- **user-admin app** — first-party consent host / app management SPA (moved from anchor-log)
 - **New**: Registry resolution endpoint (`/api/registry/resolve`) for NATS auth callout
 - **New**: NATS auth callout service source (deploys as sidecar to NATS server)
 - **New**: `streamCapabilities` on ClientRecord (canPost, canReceive, domains)
@@ -166,7 +167,15 @@ The `/api/registry/resolve` endpoint:
 - anchor-log's `/api/me` and app lifecycle endpoints redirect or proxy to anchor-hub
 - New env var: `ANCHOR_HUB_URL` in anchor-log's `local.settings.json`
 
-### A6: Auth callout service (source in anchor-hub)
+### A6: User-admin app (moved from anchor-log)
+
+- `client-apps/user-admin/` — Vite + React SPA, first-party Clerk session auth
+- Consent host: renders install manifest, handles Accept/Decline for third-party apps
+- App management dashboard: list/uninstall installed apps
+- All endpoints it calls live in anchor-hub: `/api/me`, `/api/users/me/installed-apps`, `/api/clients/{clientId}/install-manifest`
+- Previously `anchor-log/client-poc-apps/user-admin/`, tracked as P15
+
+### A7: Auth callout service (source in anchor-hub)
 
 - `src/callout/authCallout.ts` — small Node process (~100 lines)
 - Connects to NATS, subscribes to `$SYS.REQ.USER.AUTH`
