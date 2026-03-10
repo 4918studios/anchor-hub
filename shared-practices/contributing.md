@@ -95,13 +95,16 @@ npm test -- tests/security
 npm test -- --coverage
 ```
 
-### 6. Update Documentation
+### 6. Between-Task Cleanup
 
-- Update README.md if needed
-- Update ADRs if decisions changed
-- Update PROGRESS.md with final notes
-- Ensure TESTING.md, REVIEW.md, and RETRO.md are present
-- Update STATUS.md (move to "Completed")
+Run the [between-task-cleanup](between-task-cleanup.md) checklist:
+
+- `npm test && npm run build` — verify nothing is broken
+- Update STATUS.md — mark task as done
+- Update PROGRESS.md — log deliverables and key decisions
+- Update REVIEW.md — add manual verification steps
+- Update README.md / ADRs if decisions changed
+- Commit with proper format and push
 
 ### 7. Sprint Closeout (fresh eyes)
 
