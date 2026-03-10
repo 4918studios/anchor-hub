@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local Azure Functions settings (contains secrets)
+local.settings.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage/
+
+# Azure Functions Core Tools
+bin/
+obj/
+.azure/
+
+# NKey seed files (secrets — JWTs are safe to commit)
+config/**/*.nk
+config/**/*.seed

@@ -1,0 +1,42 @@
+{
+  "name": "anchor-hub",
+  "version": "1.0.0",
+  "description": "Platform identity, registry, and policy engine for the anchor ecosystem",
+  "main": "dist/src/functions/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rm -rf dist",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "azure-functions",
+    "identity",
+    "registry",
+    "policy"
+  ],
+  "author": "4918studios",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/cosmos": "^4.9.0",
+    "@azure/functions": "^4.6.0",
+    "jsonwebtoken": "^9.0.3",
+    "jwks-rsa": "^3.2.2",
+    "uuid": "^13.0.0",
+    "uuidv7": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.11.0",
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^4.0.18"
+  }
+}
