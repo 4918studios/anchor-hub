@@ -29,21 +29,26 @@ See [PLAN.md](PLAN.md) for the full extraction plan and architecture.
 
 ## Status
 
-**Pre-scaffold** — Plan written, repo seeded. See [PLAN.md](PLAN.md) for next steps.
+**A1 complete** — Scaffold deployed with DI, stubs, audit wrapper, all 7 endpoints.
+Next: **A2** — Wire real Cosmos containers. See [tasks/STATUS.md](tasks/STATUS.md).
 
 ## Quick start
 
 ```bash
-# Coming soon — scaffold in progress
 npm install
-npm run build
-npm start
+npm start                 # starts Azure Functions local runtime on :7071
 ```
+
+Endpoints are available at `http://localhost:7071/api/*`. All services use in-memory stubs by default (`AUTH_BYPASS=true`). See `local.settings.json` for toggles.
 
 ## Documentation
 
 - [PLAN.md](PLAN.md) — Extraction plan, architecture, workstream details
-- `docs/ONBOARDING.md` — Getting started (coming soon)
+- [docs/ONBOARDING.md](docs/ONBOARDING.md) — Getting started
+- [docs/architecture/overview.md](docs/architecture/overview.md) — Architecture overview
+- [docs/architecture/decisions/](docs/architecture/decisions/) — ADRs (inherited + new)
+- [docs/local-practices/](docs/local-practices/) — Project-specific patterns
+- [tasks/STATUS.md](tasks/STATUS.md) — Current work board
 - `shared-practices/` — How we work (shared across all anchor repos)
 
 ## Related repos

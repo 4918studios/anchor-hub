@@ -1,8 +1,10 @@
 # Tasks — anchor-hub
 
+> Roadmap and workstream details: [PLAN.md](../PLAN.md)
+
 ## Status Board
 
-> Last updated: 2025-07-16
+> Last updated: 2025-03-09
 
 ### Workstream A — Extract anchor-hub
 
