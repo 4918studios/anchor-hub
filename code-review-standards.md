@@ -165,6 +165,10 @@ I don't like this approach.
 - **Fix issues**: Address feedback promptly
 - **Document decisions**: Update PROGRESS.md with decisions made
 
+## Relationship to Between-Task Cleanup
+
+The [between-task-cleanup](between-task-cleanup.md) process runs **after every task** and produces the REVIEW.md that reviewers use during code review. Good cleanup makes reviews faster. See that doc for details.
+
 ## When to Approve
 
 Approve when:

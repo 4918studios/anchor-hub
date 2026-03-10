@@ -130,6 +130,11 @@ Use the VS Code REST Client extension to exercise APIs, validate mock data, and 
 
 **See:** [manual-testing-with-rest-client.md](manual-testing-with-rest-client.md)
 
+### 11. Between-Task Cleanup
+The repeatable cleanup ritual to run after completing each task: verify, update docs, commit, push. Ensures clean handoffs between tasks, sessions, and people.
+
+**See:** [between-task-cleanup.md](between-task-cleanup.md)
+
 ## Using Shared Practices in Your Project
 
 ### Setup
