@@ -77,6 +77,9 @@ export interface ClientRecord {
   /** Per-resource fine-grained policy rules */
   policies: ClientPolicies;
 
+  /** NATS stream capabilities — defines what domains/topics this client can access */
+  streamCapabilities: StreamCapabilities | null;
+
   /** Open bag for cross-referencing external systems */
   externalIds: Record<string, string>;
 
@@ -85,4 +88,32 @@ export interface ClientRecord {
 
   /** Developer contact email */
   contactEmail: string | null;
+}
+
+// =============================================================================
+// Stream Capabilities (NATS)
+// =============================================================================
+
+/**
+ * Per-domain stream capability for a client.
+ * Determines what NATS subjects the auth callout will grant.
+ */
+export interface DomainCapability {
+  /** Domain ID this capability applies to (e.g. "dom_abc") */
+  domainId: string;
+
+  /** Resource types this client can publish (e.g. ["journal:entry"]) */
+  canPost: string[];
+
+  /** Resource types this client can receive (e.g. ["post.all"]) */
+  canReceive: string[];
+}
+
+/**
+ * NATS stream capabilities for a client record.
+ * Used by the auth callout service to scope User JWTs.
+ */
+export interface StreamCapabilities {
+  /** Domains this client can access */
+  domains: DomainCapability[];
 }

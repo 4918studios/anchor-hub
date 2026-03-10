@@ -43,9 +43,30 @@ All HTTP function handlers use `auditedHandler()` from `src/lib/auditedHandler.t
 - Types: `src/types/*.ts` — data shapes, enums, error classes
 - Service interfaces: `src/services/interfaces/*.ts` — contracts
 - Service stubs: `src/services/stubs/*.ts` — in-memory implementations for local dev
-- Service implementations: `src/services/*.ts` — real implementations (DynamoDB, Clerk, etc.)
+- Service implementations: `src/services/implementations/*.ts` — real DynamoDB-backed implementations
 - Functions: `src/handlers/*.ts` — HTTP endpoint handlers
 - Lambda: `src/lambda/*.ts` — AWS Lambda adapter, router, local dev server
+
+## DynamoDB Patterns
+
+### Table Layout
+Three tables with `ANCHOR_HUB_` prefix (configurable via `TABLE_PREFIX` env var):
+- `anchor-hub-clients` — pk: clientId or `LINK#provider#identifier`, sk: `CLIENT` or `LINK`
+- `anchor-hub-users` — pk: userId or `LINK#issuer#subject`, sk: `USER` or `LINK`
+- `anchor-hub-audit` — pk: requestId. GSI `UserIdIndex` on (userId, timestamp)
+
+### Key Conventions
+- Identity link items use `LINK#provider#identifier` as pk — enables single-item point reads for resolving azp→clientId or (iss,sub)→userId
+- Transactional writes: record + link items are written atomically via `TransactWriteCommand`
+
+### TTL Cache
+Real registry services use a simple in-memory TTL cache (class-level, not shared):
+- **ClientRegistryService**: 5-minute TTL
+- **UserRegistryService**: 1-hour TTL
+- Cache is busted on mutations (`create`, `update`)
+
+### Shared Client
+`src/lib/dynamoClient.ts` exports `getDocClient()` — creates one `DynamoDBDocumentClient` singleton, configured from `DYNAMODB_ENDPOINT` env var (for DynamoDB Local) or default AWS config.
 
 ## Lineage from anchor-log
 

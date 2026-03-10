@@ -90,16 +90,16 @@ anchor-hub is the platform's centralized identity, registry, and policy engine. 
 
 All services are resolved through `getServices()` in `src/lib/serviceFactory.ts`:
 
-| Service | Interface | Stub | Real (future) |
-|---------|-----------|------|---------------|
-| auth | `IAuthService` | `AuthStub` (headers/env) | `AuthService` (Clerk JWT + registries) |
-| clientRegistry | `IClientRegistryService` | `ClientRegistryStub` (Map) | `ClientRegistryService` (DynamoDB) |
-| userRegistry | `IUserRegistryService` | `UserRegistryStub` (Map) | `UserRegistryService` (DynamoDB) |
-| policy | `IPolicyService` | `PolicyStub` (allow-all) | `PolicyService` (rule eval) |
-| auditLogger | `IAuditLogger` | `AuditLoggerStub` (Map) | `AuditLoggerService` (DynamoDB) |
+| Service | Interface | Stub | Real |
+|---------|-----------|------|------|
+| auth | `IAuthService` | `AuthStub` (headers/env) | `AuthService` (Clerk JWT + registries) — *A3* |
+| clientRegistry | `IClientRegistryService` | `ClientRegistryStub` (Map) | `ClientRegistryService` (DynamoDB + TTL cache) ✅ |
+| userRegistry | `IUserRegistryService` | `UserRegistryStub` (Map) | `UserRegistryService` (DynamoDB + TTL cache) ✅ |
+| policy | `IPolicyService` | `PolicyStub` (allow-all) | `PolicyService` (rule eval) — *A5* |
+| auditLogger | `IAuditLogger` | `AuditLoggerStub` (Map) | `AuditLoggerService` (DynamoDB) ✅ |
 | errors | `IErrorHandler` | `ErrorHandlerImpl` | same |
 
-Environment-driven: `AUTH_BYPASS=true` → stubs, otherwise real implementations.
+Environment-driven: `AUTH_BYPASS=true` → stubs, `USE_REAL_*` env vars toggle individual services. See [local-practices](../local-practices/README.md) for the full toggle table.
 
 ## ADRs
 

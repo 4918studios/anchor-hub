@@ -4,14 +4,14 @@
 
 ## Status Board
 
-> Last updated: 2025-03-09
+> Last updated: 2026-03-10
 
 ### Workstream A — Extract anchor-hub
 
 | Task | Status | Notes |
 |------|--------|-------|
 | **A1** Scaffold project + AWS migration | **Done** | Lambda handlers, DI, stubs, audit wrapper, all 7 endpoints. ADR-001 (Azure→AWS). |
-| **A2** Wire real DynamoDB tables (clients, users) | Not started | Multi-table design, on-demand capacity |
+| **A2** Wire real DynamoDB tables (clients, users) | **Done** | 3-table design (clients, users, audit). DynamoDB-backed services with TTL cache. `streamCapabilities` added to ClientRecord. Service factory wires real or stub per env var. |
 | **A3** Extract auth service (Clerk JWT → identity) | Not started | Port from anchor-log's AuthService |
 | **A4** Extract client/user registry services | Not started | Port Cosmos-backed implementations |
 | **A5** Wire real policy evaluation | Not started | Depends on A3/A4 |

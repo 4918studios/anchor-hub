@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../anchor-tds"
+		},
+		{
+			"path": "../anchor-log"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"chat.tools.terminal.autoApprove": {
+			"npx tsc": true,
+			"true": true,
+			"diff": true
+		}
+	}
+}

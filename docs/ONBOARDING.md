@@ -46,6 +46,7 @@ anchor-hub/
 │   │   └── local.ts        # Local dev HTTP server
 │   ├── lib/                # Shared infrastructure
 │   │   ├── serviceFactory.ts    # DI container (env-driven stubs/real)
+│   │   ├── dynamoClient.ts     # Shared DynamoDB Document client + table helpers
 │   │   ├── auditedHandler.ts    # Audit wrapper for all handlers
 │   │   ├── auditSink.ts         # Pluggable audit dispatch
 │   │   ├── errorHandler.ts      # Error → HTTP response mapping
@@ -54,8 +55,14 @@ anchor-hub/
 │   │   └── safeLogger.ts        # Structured logging with redaction
 │   ├── services/
 │   │   ├── interfaces/     # Service contracts (auth, registries, policy, audit)
-│   │   └── stubs/          # In-memory implementations for dev/test
+│   │   ├── stubs/          # In-memory implementations for dev/test
+│   │   └── implementations/  # Real DynamoDB-backed services
+│   │       ├── clientRegistryService.ts  # 5-min TTL cache
+│   │       ├── userRegistryService.ts    # 1-hour TTL cache
+│   │       └── auditLoggerService.ts     # GSI query support
 │   └── types/              # Shared types (http, audit, client, user, policy, errors)
+├── scripts/
+│   └── setup-tables.ts     # DynamoDB table creation (local + AWS)
 ├── client-apps/
 │   └── user-admin/         # Consent host SPA (Vite + React)
 ├── shared-practices/       # Git subtree from 4918studios/shared-practices

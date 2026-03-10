@@ -10,14 +10,17 @@
 - Initialized with seed docs: `PLAN.md`, `README.md`, `AGENTS.md`
 - Added `shared-practices/` as git subtree from `https://github.com/4918studios/shared-practices.git`
 
-### A1 Scaffold (Azure Functions v4)
-- Project config: `package.json`, `tsconfig.json`, `host.json`, `vitest.config.ts`, `.gitignore`
-- 7 function endpoints: health, me, registry-resolve, apps/(install, uninstall, list, install-manifest)
+### A1 Scaffold (AWS Lambda + API Gateway)
+- Project config: `package.json`, `tsconfig.json`, `vitest.config.ts`, `.gitignore`
+- AWS Lambda adapter layer: `src/lambda/` (handler, adapter, router, local dev server)
+- 7 HTTP handlers: health, me, registry-resolve, apps/(install, uninstall, list, install-manifest)
 - Lib: serviceFactory, auditedHandler, auditSink, errorHandler, identifiers, requestContext, safeLogger
 - Service interfaces: auth, clientRegistry, userRegistry, policy, auditLogger, errors
 - Service stubs: in-memory implementations (AuthStub, ClientRegistryStub, UserRegistryStub, PolicyStub, AuditLoggerStub)
 - Types: audit (anchor-hub operations catalog), errors (AnchorHubError hierarchy), client, user, policy
 - `npx tsc --noEmit` passes with 0 errors
+
+> **Note:** Originally scaffolded as Azure Functions v4 then migrated to AWS Lambda + API Gateway in the same sprint. See [ADR-001](../../docs/architecture/decisions/001-migrate-azure-to-aws.md).
 
 ### User-Admin Migration
 - Moved `client-poc-apps/user-admin/` from anchor-log to `client-apps/user-admin/`
@@ -30,7 +33,7 @@
 ## Key Decisions
 
 - **New repo** (not a subtree of anchor-log or anchor-tds)
-- **Azure Functions v4** (same stack as anchor-log for consistency)
+- **AWS Lambda + API Gateway** (migrated from Azure Functions v4 — see ADR-001)
 - **"anchor-hub"** naming (emphasizes central coordination role)
 - Auth callout source lives in anchor-hub, deploys as NATS sidecar
 
@@ -41,9 +44,10 @@ anchor-hub/
 ├── AGENTS.md
 ├── PLAN.md
 ├── README.md
-├── package.json, tsconfig.json, host.json, vitest.config.ts
+├── package.json, tsconfig.json, vitest.config.ts
 ├── src/
-│   ├── functions/      (7 endpoints)
+│   ├── handlers/       (7 endpoint handlers)
+│   ├── lambda/         (adapter, router, local server)
 │   ├── lib/            (7 modules)
 │   ├── services/
 │   │   ├── interfaces/ (6 interfaces)
