@@ -7,14 +7,13 @@
  * Placeholder — implementation extracted from anchor-log in A3/A4.
  */
 
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import type { HubRequest, HubResponse, HubContext } from "../../types/http.js";
 import { getServices } from "../../lib/serviceFactory.js";
-import { createAuditedHandler } from "../../lib/auditedHandler.js";
 
 export async function listInstalledApps(
-  request: HttpRequest,
-  context: InvocationContext
-): Promise<HttpResponseInit> {
+  request: HubRequest,
+  context: HubContext,
+): Promise<HubResponse> {
   const { auth, errors } = getServices();
 
   try {
@@ -31,10 +30,3 @@ export async function listInstalledApps(
     return errors.handleError(error, context);
   }
 }
-
-app.http("listInstalledApps", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "users/me/installed-apps",
-  handler: createAuditedHandler("app.list", listInstalledApps),
-});

@@ -6,14 +6,13 @@
  * Returns service health status and version info.
  */
 
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import type { HubRequest, HubResponse, HubContext } from "../types/http.js";
 import { getServices } from "../lib/serviceFactory.js";
-import { createAuditedHandler } from "../lib/auditedHandler.js";
 
 export async function health(
-  request: HttpRequest,
-  context: InvocationContext
-): Promise<HttpResponseInit> {
+  request: HubRequest,
+  context: HubContext,
+): Promise<HubResponse> {
   try {
     const services = getServices();
 
@@ -49,10 +48,3 @@ export async function health(
     };
   }
 }
-
-app.http("health", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "health",
-  handler: createAuditedHandler("system.health", health),
-});

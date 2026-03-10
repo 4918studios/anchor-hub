@@ -3,7 +3,7 @@
  *
  * Pluggable dispatch point for audit events. The audited handler wrapper
  * calls `dispatchAuditEvent()` after every request. By default this is
- * a no-op — the real Cosmos writer is registered by the service factory.
+ * a no-op — the real DynamoDB writer is registered by the service factory.
  *
  * Design:
  *   - `registerAuditSink()` lets the service factory plug in the real logger

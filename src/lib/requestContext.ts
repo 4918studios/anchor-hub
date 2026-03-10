@@ -5,7 +5,7 @@
  * Created by the audited handler wrapper and enriched during processing.
  */
 
-import { HttpRequest } from "@azure/functions";
+import type { HubRequest } from "../types/http.js";
 import { generateRequestId } from "./identifiers.js";
 
 export interface RequestContext {
@@ -19,7 +19,7 @@ export interface RequestContext {
   userAgent?: string;
 }
 
-export function createRequestContext(request: HttpRequest): RequestContext {
+export function createRequestContext(request: HubRequest): RequestContext {
   const correlationId = request.headers.get("x-correlation-id") || undefined;
   const ipAddress =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||

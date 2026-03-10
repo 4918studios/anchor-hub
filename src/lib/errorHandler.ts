@@ -4,7 +4,7 @@
  * Maps service errors to HTTP responses.
  */
 
-import { HttpResponseInit } from "@azure/functions";
+import type { HubResponse } from "../types/http.js";
 import type { IErrorHandler } from "../services/interfaces/errors.js";
 import { ErrorCode } from "../services/interfaces/errors.js";
 import { AnchorHubError } from "../types/errors.js";
@@ -13,7 +13,7 @@ export class ErrorHandlerImpl implements IErrorHandler {
   handleError(
     error: unknown,
     context: { log: (message: string) => void }
-  ): HttpResponseInit {
+  ): HubResponse {
     // Handle our custom errors
     if (error instanceof AnchorHubError) {
       context.log(`Handled error: ${error.code}`);
@@ -45,7 +45,7 @@ export class ErrorHandlerImpl implements IErrorHandler {
     code: ErrorCode,
     message: string,
     details?: Record<string, unknown>
-  ): HttpResponseInit {
+  ): HubResponse {
     return {
       status: statusCode,
       jsonBody: {

@@ -10,14 +10,13 @@
  * Returns: { userId, clientId, status, domains: [{domainId, canPost, canReceive}] }
  */
 
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import type { HubRequest, HubResponse, HubContext } from "../types/http.js";
 import { getServices } from "../lib/serviceFactory.js";
-import { createAuditedHandler } from "../lib/auditedHandler.js";
 
 export async function registryResolve(
-  request: HttpRequest,
-  context: InvocationContext
-): Promise<HttpResponseInit> {
+  request: HubRequest,
+  context: HubContext,
+): Promise<HubResponse> {
   const { auth, errors } = getServices();
 
   try {
@@ -43,10 +42,3 @@ export async function registryResolve(
     return errors.handleError(error, context);
   }
 }
-
-app.http("registryResolve", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "registry/resolve",
-  handler: createAuditedHandler("registry.resolve", registryResolve),
-});

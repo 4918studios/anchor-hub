@@ -2,10 +2,10 @@
  * Auth Service Interface
  *
  * Defines the contract for authentication and identity extraction.
- * Production implementation uses Clerk OIDC JWT validation + Cosmos registries.
+ * Production implementation uses Clerk OIDC JWT validation + DynamoDB registries.
  */
 
-import { HttpRequest } from "@azure/functions";
+import type { HubRequest } from "../../types/http.js";
 import type { ClientPolicies, ClientType } from "../../types/client.js";
 
 /**
@@ -50,5 +50,5 @@ export interface IAuthService {
    * @throws UnauthorizedError if token is missing, invalid, or expired
    * @throws ForbiddenError if authenticated principal fails authorization checks
    */
-  requireIdentity(request: HttpRequest): Promise<Identity>;
+  requireIdentity(request: HubRequest): Promise<Identity>;
 }

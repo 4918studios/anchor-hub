@@ -18,8 +18,8 @@ Browser/Client
   ├── JWT (Clerk) ──→ anchor-hub /api/me, /api/registry/resolve
   │                      │
   │                      ├── Clerk JWKS ──→ JWT validation
-  │                      ├── Cosmos `clients` ──→ azp → clientId
-  │                      ├── Cosmos `users` ──→ (iss,sub) → userId
+  │                      ├── DynamoDB `clients` ──→ azp → clientId
+  │                      ├── DynamoDB `users` ──→ (iss,sub) → userId
   │                      └── Policy rules ──→ authorization
   │
   ├── JWT (Clerk) ──→ anchor-log (delegates identity to anchor-hub)
@@ -34,12 +34,16 @@ Browser/Client
 ```
 anchor-hub/
 ├── src/
-│   ├── functions/          # Azure Functions endpoints
-│   │   ├── index.ts        # Entry point — imports all functions
+│   ├── handlers/           # HTTP endpoint handlers (cloud-agnostic)
 │   │   ├── health.ts       # GET /health
 │   │   ├── me.ts           # GET /me (identity)
 │   │   ├── registry-resolve.ts  # GET /registry/resolve (NATS auth callout)
 │   │   └── apps/           # App lifecycle (install, uninstall, list, manifest)
+│   ├── lambda/             # AWS Lambda integration layer
+│   │   ├── handler.ts      # Lambda entry point (API Gateway proxy)
+│   │   ├── adapter.ts      # API Gateway → HubRequest/HubResponse mapping
+│   │   ├── router.ts       # Route matching (method + path → handler)
+│   │   └── local.ts        # Local dev HTTP server
 │   ├── lib/                # Shared infrastructure
 │   │   ├── serviceFactory.ts    # DI container (env-driven stubs/real)
 │   │   ├── auditedHandler.ts    # Audit wrapper for all handlers
@@ -51,7 +55,7 @@ anchor-hub/
 │   ├── services/
 │   │   ├── interfaces/     # Service contracts (auth, registries, policy, audit)
 │   │   └── stubs/          # In-memory implementations for dev/test
-│   └── types/              # Shared types (audit, client, user, policy, errors)
+│   └── types/              # Shared types (http, audit, client, user, policy, errors)
 ├── client-apps/
 │   └── user-admin/         # Consent host SPA (Vite + React)
 ├── shared-practices/       # Git subtree from 4918studios/shared-practices
@@ -65,12 +69,12 @@ anchor-hub/
 ### Prerequisites
 
 - Node.js ≥ 20
-- Azure Functions Core Tools v4 (`npm i -g azure-functions-core-tools@4`)
 
 ### Setup
 
 ```bash
 npm install
+cp .env.example .env
 ```
 
 ### Run locally (stubs mode)
@@ -79,7 +83,7 @@ npm install
 npm start
 ```
 
-This builds TypeScript and starts Azure Functions locally. All services use in-memory stubs by default (`AUTH_BYPASS=true` in `local.settings.json`).
+This builds TypeScript and starts a local HTTP server on port 3000. All services use in-memory stubs by default (`AUTH_BYPASS=true` in `.env`). See `.env.example` for toggles.
 
 ### Type-check
 

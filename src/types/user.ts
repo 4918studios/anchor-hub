@@ -1,7 +1,7 @@
 /**
  * User Types
  *
- * User registry types for the Cosmos `users` container.
+ * User registry types for the DynamoDB `users` table.
  * Each user record represents a person who has authenticated with the platform.
  */
 
@@ -72,7 +72,7 @@ export interface InstalledApp {
 export type UserStatus = "active" | "suspended";
 
 /**
- * Full user record stored in the Cosmos `users` container.
+ * Full user record stored in the DynamoDB `users` table.
  * Partition key: userId.
  */
 export interface UserRecord {

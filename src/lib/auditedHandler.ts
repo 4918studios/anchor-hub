@@ -1,7 +1,7 @@
 /**
  * Audited Handler Wrapper
  *
- * Wraps Azure Functions v4 handlers to produce one audit event per request.
+ * Wraps HTTP handlers to produce one audit event per request.
  * The wrapper:
  *   1. Creates a RequestContext at request start
  *   2. Runs the original handler
@@ -11,22 +11,12 @@
  * Adapted from anchor-log — uses anchor-hub's ROUTE_OPERATION_MAP.
  */
 
-import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import type { HubRequest, HubResponse, HubContext, HubHandler } from "../types/http.js";
 import { generateEventId } from "./identifiers.js";
 import { createRequestContext } from "./requestContext.js";
 import { dispatchAuditEvent } from "./auditSink.js";
 import type { AuditEvent, AuditDecision, AuditOperation, DenialLayer } from "../types/audit.js";
 import { ROUTE_OPERATION_MAP } from "../types/audit.js";
-
-// =============================================================================
-// Types
-// =============================================================================
-
-/** Azure Functions v4 HTTP handler signature */
-type HttpHandler = (
-  request: HttpRequest,
-  context: InvocationContext,
-) => Promise<HttpResponseInit>;
 
 /** Options for the audited handler wrapper */
 export interface AuditedHandlerOptions {
@@ -42,7 +32,7 @@ export interface AuditedHandlerOptions {
 // =============================================================================
 
 /**
- * Wrap an Azure Functions handler with audit event emission.
+ * Wrap a handler with audit event emission.
  *
  * @param operation - Logical operation name from the operations catalog
  * @param handler - Original handler function
@@ -51,17 +41,17 @@ export interface AuditedHandlerOptions {
  */
 export function createAuditedHandler(
   operation: AuditOperation,
-  handler: HttpHandler,
+  handler: HubHandler,
   options?: AuditedHandlerOptions,
-): HttpHandler {
+): HubHandler {
   const routeEntry = ROUTE_OPERATION_MAP.find((r) => r.operation === operation);
   const routePattern = routeEntry?.pattern ?? "/unknown";
   const defaultResourceType = routeEntry?.resourceType;
 
-  return async (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> => {
+  return async (request: HubRequest, context: HubContext): Promise<HubResponse> => {
     const reqCtx = createRequestContext(request);
 
-    let response: HttpResponseInit;
+    let response: HubResponse;
     try {
       response = await handler(request, context);
     } catch (error) {
@@ -134,7 +124,7 @@ interface DecisionResult {
  */
 function inferDecision(
   statusCode: number,
-  response: HttpResponseInit,
+  response: HubResponse,
 ): DecisionResult {
   const body = response.jsonBody as Record<string, unknown> | undefined;
   const message = (body?.message as string) || undefined;

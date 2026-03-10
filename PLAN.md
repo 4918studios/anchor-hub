@@ -53,7 +53,7 @@ Two parallel workstreams that converge:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        anchor-hub                           │
-│                  (Azure Functions v4)                       │
+│              (AWS Lambda + API Gateway)                      │
 │                                                             │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │              Auth + Policy Engine                     │  │
@@ -99,7 +99,7 @@ Two parallel workstreams that converge:
 ### A1: Scaffold anchor-hub repo
 
 - New GitHub repo (`4918studios/anchor-hub`)
-- Azure Functions v4 (Node/TS): `host.json`, `package.json`, `tsconfig.json`, `vitest.config.ts`
+- AWS Lambda + API Gateway (Node/TS): `package.json`, `tsconfig.json`, `vitest.config.ts`
 - Copy `shared-practices/` subtree (git subtree, same as anchor-log and anchor-tds)
 - Create `AGENTS.md`, `README.md`, `docs/ONBOARDING.md`, `tasks/STATUS.md`
 - Set up DI pattern: `serviceFactory.ts`, interfaces/implementations/stubs
@@ -247,11 +247,11 @@ Once both workstreams reach critical mass:
 |---|---|---|
 | Service name | **anchor-hub** | Connotes coordination hub; avoids confusion with shared lib ("core") or API gateway infra ("gateway") |
 | Repo strategy | **New standalone repo** | Clean boundary; both anchor-log and anchor-tds depend on it |
-| Runtime | **Azure Functions v4 (Node/TS)** | Same stack as anchor-log; reuse patterns, tooling, deployment |
+| Runtime | **AWS Lambda + API Gateway (Node/TS)** | Simpler, better ecosystem, lower cost at pre-production scale (ADR-001) |
 | Code sharing | **Copy-then-evolve** | Faster than premature npm extraction; revisit when contracts stabilize |
 | Auth callout hosting | **Source in anchor-hub, deploys as NATS sidecar** | Code lives with auth layer; runs next to NATS server |
 | First move | **Both workstreams in parallel** | Scaffold anchor-hub while NATS auth callout progresses with static registry |
-| Cosmos DB | **Shared (same account, separate containers)** | anchor-hub reads/writes clients + users containers; anchor-log reads/writes entries + versions |
+| Cosmos DB | **DynamoDB (multi-table, on-demand)** | anchor-hub uses its own tables (`clients`, `users`, `audit`); anchor-log retains Cosmos DB |
 
 ---
 

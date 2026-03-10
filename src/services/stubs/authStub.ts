@@ -5,7 +5,7 @@
  * Used when AUTH_BYPASS=true or in development mode.
  */
 
-import { HttpRequest } from "@azure/functions";
+import type { HubRequest } from "../../types/http.js";
 import type { Identity, IAuthService } from "../interfaces/index.js";
 import type { ClientPolicies, ClientType } from "../../types/client.js";
 
@@ -44,7 +44,7 @@ export class AuthStub implements IAuthService {
    * Fallback to env vars:
    * - DEV_USER_ID, DEV_CLIENT_ID, DEV_CLIENT_TYPE, DEV_AUTH_SCOPES
    */
-  async requireIdentity(request: HttpRequest): Promise<Identity> {
+  async requireIdentity(request: HubRequest): Promise<Identity> {
     const userId =
       request.headers.get("x-user-id") ||
       process.env.DEV_USER_ID ||

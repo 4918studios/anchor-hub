@@ -1,7 +1,7 @@
 /**
  * User Registry Service Interface
  *
- * Manages user records in the Cosmos `users` container.
+ * Manages user records in the DynamoDB `users` table.
  */
 
 import type { UserRecord } from "../../types/user.js";

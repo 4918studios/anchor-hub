@@ -25,7 +25,7 @@ anchor-hub was extracted from anchor-log. These ADRs from anchor-log are foundat
 
 | ID | Title | Status | Date |
 |----|-------|--------|------|
-| _(none yet — first ADR will be created when A2+ requires a design decision)_ | | | |
+| [ADR-001](001-migrate-azure-to-aws.md) | Migrate from Azure to AWS | Accepted | 2026-03-09 |
 
 ## Creating a New ADR
 

@@ -8,11 +8,14 @@ anchor-hub is the platform's centralized identity, registry, and policy engine. 
 
 | Layer | Technology |
 |-------|-----------|
-| Runtime | Azure Functions v4 (Node.js 20+, TypeScript) |
-| Storage | Azure Cosmos DB (shared account, `clients` + `users` containers) |
+| Compute | AWS Lambda + API Gateway (Node.js 20+, TypeScript) |
+| Storage | DynamoDB (on-demand, multi-table: `clients`, `users`, `audit`) |
 | Auth | Clerk JWKS (RS256 JWT validation) |
+| NATS | Lightsail instance ($5/mo, TLS, WebSocket on 443) |
 | Testing | Vitest |
-| Deployment | Azure Functions (HTTP API) + NATS sidecar (auth callout) |
+| Deployment | Lambda (HTTP API) + NATS sidecar on Lightsail (auth callout) |
+
+> **ADR-001**: [Migrate from Azure to AWS](decisions/001-migrate-azure-to-aws.md)
 
 ## What anchor-hub Owns
 
@@ -52,7 +55,7 @@ anchor-hub is the platform's centralized identity, registry, and policy engine. 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                      anchor-hub                         │
-│                 (Azure Functions v4)                    │
+│              (AWS Lambda + API Gateway)                 │
 │                                                         │
 │  ┌───────────────────────────────────────────────────┐  │
 │  │           Auth + Policy Engine                    │  │
@@ -90,10 +93,10 @@ All services are resolved through `getServices()` in `src/lib/serviceFactory.ts`
 | Service | Interface | Stub | Real (future) |
 |---------|-----------|------|---------------|
 | auth | `IAuthService` | `AuthStub` (headers/env) | `AuthService` (Clerk JWT + registries) |
-| clientRegistry | `IClientRegistryService` | `ClientRegistryStub` (Map) | `ClientRegistryService` (Cosmos) |
-| userRegistry | `IUserRegistryService` | `UserRegistryStub` (Map) | `UserRegistryService` (Cosmos) |
+| clientRegistry | `IClientRegistryService` | `ClientRegistryStub` (Map) | `ClientRegistryService` (DynamoDB) |
+| userRegistry | `IUserRegistryService` | `UserRegistryStub` (Map) | `UserRegistryService` (DynamoDB) |
 | policy | `IPolicyService` | `PolicyStub` (allow-all) | `PolicyService` (rule eval) |
-| auditLogger | `IAuditLogger` | `AuditLoggerStub` (Map) | `AuditLoggerService` (Cosmos) |
+| auditLogger | `IAuditLogger` | `AuditLoggerStub` (Map) | `AuditLoggerService` (DynamoDB) |
 | errors | `IErrorHandler` | `ErrorHandlerImpl` | same |
 
 Environment-driven: `AUTH_BYPASS=true` → stubs, otherwise real implementations.

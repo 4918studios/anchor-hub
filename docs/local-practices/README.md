@@ -10,10 +10,10 @@ All services are instantiated through `src/lib/serviceFactory.ts`. The factory r
 
 | Env Var | When `true` | Default |
 |---------|-------------|---------|
-| `AUTH_BYPASS` | Uses `authStub` (skips JWT validation) | `true` in local.settings.json |
-| `USE_REAL_CLIENT_REGISTRY` | Uses Cosmos-backed client registry | `false` |
-| `USE_REAL_USER_REGISTRY` | Uses Cosmos-backed user registry | `false` |
-| `USE_REAL_AUDIT_LOGGER` | Uses Cosmos-backed audit sink | `false` |
+| `AUTH_BYPASS` | Uses `authStub` (skips JWT validation) | `true` in .env |
+| `USE_REAL_CLIENT_REGISTRY` | Uses DynamoDB-backed client registry | `false` |
+| `USE_REAL_USER_REGISTRY` | Uses DynamoDB-backed user registry | `false` |
+| `USE_REAL_AUDIT_LOGGER` | Uses DynamoDB-backed audit sink | `false` |
 
 **Rule:** Never import a service implementation directly in a function handler. Always go through the factory.
 
@@ -26,7 +26,7 @@ All HTTP function handlers use `auditedHandler()` from `src/lib/auditedHandler.t
 3. Logs the audit event via `auditSink`
 4. Catches and normalizes errors via `errorHandler`
 
-**Rule:** Never write a raw `app.http()` handler — always wrap with `auditedHandler`.
+**Rule:** Never write a raw handler — always wrap with `auditedHandler`.
 
 ## Safe Logger
 
@@ -43,8 +43,9 @@ All HTTP function handlers use `auditedHandler()` from `src/lib/auditedHandler.t
 - Types: `src/types/*.ts` — data shapes, enums, error classes
 - Service interfaces: `src/services/interfaces/*.ts` — contracts
 - Service stubs: `src/services/stubs/*.ts` — in-memory implementations for local dev
-- Service implementations: `src/services/*.ts` — real implementations (Cosmos, Clerk, etc.)
-- Functions: `src/functions/*.ts` — HTTP endpoint registrations
+- Service implementations: `src/services/*.ts` — real implementations (DynamoDB, Clerk, etc.)
+- Functions: `src/handlers/*.ts` — HTTP endpoint handlers
+- Lambda: `src/lambda/*.ts` — AWS Lambda adapter, router, local dev server
 
 ## Lineage from anchor-log
 

@@ -4,7 +4,7 @@
  * Defines the contract for consistent error handling across the service.
  */
 
-import { HttpResponseInit } from "@azure/functions";
+import type { HubResponse } from "../../types/http.js";
 import { ErrorCode } from "../../types/errors.js";
 
 /**
@@ -17,7 +17,7 @@ export interface IErrorHandler {
   handleError(
     error: unknown,
     context: { log: (message: string) => void; error?: (message: string) => void }
-  ): HttpResponseInit;
+  ): HubResponse;
 
   /**
    * Create a structured error response
@@ -27,7 +27,7 @@ export interface IErrorHandler {
     code: ErrorCode,
     message: string,
     details?: Record<string, unknown>
-  ): HttpResponseInit;
+  ): HubResponse;
 }
 
 // Re-export ErrorCode for convenience

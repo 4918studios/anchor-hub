@@ -30,20 +30,23 @@ See [PLAN.md](PLAN.md) for the full extraction plan and architecture.
 ## Status
 
 **A1 complete** — Scaffold deployed with DI, stubs, audit wrapper, all 7 endpoints.
-Next: **A2** — Wire real Cosmos containers. See [tasks/STATUS.md](tasks/STATUS.md).
+Migrated from Azure to AWS (ADR-001).
+Next: **A2** — Wire real DynamoDB tables. See [tasks/STATUS.md](tasks/STATUS.md).
 
 ## Quick start
 
 ```bash
 npm install
-npm start                 # starts Azure Functions local runtime on :7071
+cp .env.example .env      # default stub config
+npm start                  # local dev server on :3000
 ```
 
-Endpoints are available at `http://localhost:7071/api/*`. All services use in-memory stubs by default (`AUTH_BYPASS=true`). See `local.settings.json` for toggles.
+Endpoints are available at `http://localhost:3000/*`. All services use in-memory stubs by default (`AUTH_BYPASS=true`). See `.env.example` for toggles.
 
 ## Documentation
 
 - [PLAN.md](PLAN.md) — Extraction plan, architecture, workstream details
+- [docs/aws-setup-guide.md](docs/aws-setup-guide.md) — AWS account setup (DynamoDB, Lambda, Lightsail)
 - [docs/ONBOARDING.md](docs/ONBOARDING.md) — Getting started
 - [docs/architecture/overview.md](docs/architecture/overview.md) — Architecture overview
 - [docs/architecture/decisions/](docs/architecture/decisions/) — ADRs (inherited + new)

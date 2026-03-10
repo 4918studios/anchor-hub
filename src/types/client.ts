@@ -1,7 +1,7 @@
 /**
  * Client Types
  *
- * Client registry types for the Cosmos `clients` container.
+ * Client registry types for the DynamoDB `clients` table.
  * Each client record represents an application that can access the platform.
  *
  * Shared between anchor-hub (source of truth) and anchor-log (consumer).
@@ -43,7 +43,7 @@ export type ClientType = "first-party" | "third-party" | "agent";
 // =============================================================================
 
 /**
- * Full client record stored in the Cosmos `clients` container.
+ * Full client record stored in the DynamoDB `clients` table.
  * Partition key: clientId.
  */
 export interface ClientRecord {

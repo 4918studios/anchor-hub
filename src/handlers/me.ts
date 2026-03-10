@@ -10,14 +10,13 @@
  * @see anchor-log/docs/architecture/decisions/013-client-and-user-access-control.md
  */
 
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import type { HubRequest, HubResponse, HubContext } from "../types/http.js";
 import { getServices } from "../lib/serviceFactory.js";
-import { createAuditedHandler } from "../lib/auditedHandler.js";
 
 export async function getIdentity(
-  request: HttpRequest,
-  context: InvocationContext
-): Promise<HttpResponseInit> {
+  request: HubRequest,
+  context: HubContext,
+): Promise<HubResponse> {
   const { auth, errors } = getServices();
 
   try {
@@ -39,10 +38,3 @@ export async function getIdentity(
     return errors.handleError(error, context);
   }
 }
-
-app.http("getIdentity", {
-  methods: ["GET"],
-  authLevel: "anonymous",
-  route: "me",
-  handler: createAuditedHandler("identity.whoami", getIdentity),
-});

@@ -4,10 +4,7 @@ node_modules/
 # Build output
 dist/
 
-# Local Azure Functions settings (contains secrets)
-local.settings.json
-
-# Environment files
+# Environment files (secrets — .env.example is committed)
 .env
 .env.local
 .env.*.local
@@ -26,10 +23,10 @@ npm-debug.log*
 # Test coverage
 coverage/
 
-# Azure Functions Core Tools
-bin/
-obj/
-.azure/
+# AWS
+.aws-sam/
+cdk.out/
+samconfig.toml
 
 # NKey seed files (secrets — JWTs are safe to commit)
 config/**/*.nk

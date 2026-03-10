@@ -1,7 +1,7 @@
 /**
  * Client Registry Service Interface
  *
- * Manages client application records in the Cosmos `clients` container.
+ * Manages client application records in the DynamoDB `clients` table.
  */
 
 import type { ClientRecord, ClientStatus } from "../../types/client.js";

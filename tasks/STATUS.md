@@ -10,8 +10,8 @@
 
 | Task | Status | Notes |
 |------|--------|-------|
-| **A1** Scaffold Azure Functions v4 project | **Done** | Config, functions, lib, types, services, stubs — compiles clean |
-| **A2** Wire real Cosmos containers (clients, users) | Not started | Shared Cosmos account, anchor-hub containers |
+| **A1** Scaffold project + AWS migration | **Done** | Lambda handlers, DI, stubs, audit wrapper, all 7 endpoints. ADR-001 (Azure→AWS). |
+| **A2** Wire real DynamoDB tables (clients, users) | Not started | Multi-table design, on-demand capacity |
 | **A3** Extract auth service (Clerk JWT → identity) | Not started | Port from anchor-log's AuthService |
 | **A4** Extract client/user registry services | Not started | Port Cosmos-backed implementations |
 | **A5** Wire real policy evaluation | Not started | Depends on A3/A4 |
